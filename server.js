@@ -11,7 +11,7 @@ app.engine("handlebars", exphbs({
 }));
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
-app.set("port", (process.env.PORT || 8080));
+app.set("port", (process.env.PORT || 3000));
 
 app.use("/public", express.static("public"));
 

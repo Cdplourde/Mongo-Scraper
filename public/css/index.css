@@ -1,0 +1,13 @@
+.showcase {
+  color: white;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.pexels.com/photos/920115/pexels-photo-920115.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 400px;
+  font-family: Roboto Slab;
+  letter-spacing: 5px;
+}
+
+h1 {
+  font-size: 80px;
+}
