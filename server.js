@@ -1,6 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var path = require("path");
+require("dotenv").config();
 
 var app = express();
 var exphbs = require("express-handlebars");
@@ -24,4 +25,4 @@ require("./controllers/routes")(app);
 
 app.listen(app.get("port"), function() {
   console.log("App listening on PORT " + app.get("port"));
-});``
+});
