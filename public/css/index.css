@@ -11,3 +11,43 @@
 h1 {
   font-size: 80px;
 }
+
+.loading {
+  display: none;
+}
+
+.articles {
+  list-style: none;
+  padding: 20px;
+  min-height: calc(100vh - 456px);
+  margin: 0;
+}
+
+.no-articles {
+  background-color: orange;
+  padding: 20px;
+  color: white;
+  font-size: 30px;
+  text-align: center;
+  border: 1px solid orange;
+  border-radius: 5px;
+}
+
+.container-articles {
+  background-image: url("../image/soft_wallpaper.png"); 
+}
+
+.card-header {
+  font-size: 30px;
+}
+
+a[target="_blank"] {
+  text-decoration: none;
+}
+
+.fas {
+  position: relative;
+  font-size: 20px;
+  bottom: 2px;
+  left: 5px;
+}

@@ -5,12 +5,21 @@ var db = require("../models/");
 module.exports = function(app) {
 
   app.get("/", function(req, res) {
-    res.render("index");
+    var hbsObject = {}
+    db.Article.find({})
+    .then(function(results) {
+      hbsObject.articles = results;
+      res.render("index", hbsObject);
+    })
   });
 
-  app.get("/scrape", function(req, res) {
+  app.get("/saved", function(req, res) {
+
+  });
+
+  app.post("/scrape", function(req, res) {
     // get all current titles in database
-    dbTitles = []
+    var dbTitles = []
     db.Article.find({})
     .then(function(arts) {
       arts.forEach(art => dbTitles.push(art.title.toString()));         
@@ -24,6 +33,7 @@ module.exports = function(app) {
       if (err) throw err;
       else {
         var $ = cheerio.load(body);
+        var results = []
         $(".latest-panel .story-link").each(function(i, element) {
           // store scrape results into object
           var result = {};
@@ -32,21 +42,23 @@ module.exports = function(app) {
           result.description = $(this).children(".story-meta").children(".summary").text().trim();  
           // only store new articles
           if (!dbTitles.includes(result.title)) {
-            db.Article.create(result)
-            .then(function(articleResult) {
-              console.log(articleResult);
-            })
-            .catch(function(err) {
-              return res.json(err);
-            })       
+            results.push(result);
           }
-          else {
-            console.log("already in db!");
-          }
-        });  
-          res.end();    
+        });
+        if (results.length > 0) {
+          db.Article.create(results)
+          .then(function() {
+            res.send(`${results.length}`);
+          })
+          .catch(function(err) {
+            res.json(err);
+          })
+        }
+        else {
+          res.send(`${results.length}`);
+        }  
       }
-    });
+    })
   });
 
 }

@@ -16,6 +16,15 @@ var ArticleSchema = new Schema({
   description: {
     type: String,
     required: true
+  },
+  saved: {
+    type: Boolean,
+    default: false,
+    required: true
+  },
+  note: {
+    type: Array,
+    default: []
   }
 });
 
