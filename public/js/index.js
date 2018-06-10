@@ -1,8 +1,34 @@
+document.querySelectorAll('.save').forEach(function(btn, i) {
+  btn.addEventListener("click", function(e) {
+    e.preventDefault();
+    btn.setAttribute("disabled", true);
+    var id = btn.getAttribute("data-id");
+    save(id);
+    btn.innerText = "Saved"
+  })
+})
+
+
 document.querySelector('.scrape').addEventListener('click', function(e) {
   e.preventDefault();
-  this.setAttribute("disabled", true);
+  this.setAttribute('disabled', true);
   scrape();
 });
+
+function save(id) {
+  fetch('/saved', {
+      method: "PUT",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"id": id})
+    }).then((res) => {
+      console.log("this is res", res)
+    }).catch((err) => {
+      console.log(err)
+    })
+}
  
 function scrape() {
   //create XHR object

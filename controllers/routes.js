@@ -14,7 +14,23 @@ module.exports = function(app) {
   });
 
   app.get("/saved", function(req, res) {
+    var hbsObject = {}
+    db.Article.find({"saved": true})
+    .then(function(results) {
+      hbsObject.articles = results;
+      res.render("saved", hbsObject);
+    });
+  });
 
+  app.put("/saved", function(req, res) {
+    console.log(req.body);
+    db.Article.update({_id: req.body.id}, {$set: {saved: true}})
+    .then(function() {
+      res.end();
+    })
+    .catch(function(err) {
+      res.json(err)
+    });
   });
 
   app.post("/scrape", function(req, res) {

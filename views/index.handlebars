@@ -42,14 +42,13 @@
                 <div class="d-inline float-left">
                   <a href="{{link}}" target="_blank" class="text-white">{{title}} <i class="fas fa-external-link-alt"></i></a>
                 </div> 
-                <button class="btn btn-success save d-inline float-right mt-1">Save Article</button>
+                <button class="btn btn-success save d-inline float-right mt-1" data-id="{{_id}}">Save Article</button>
               </div>
               <div class="card-body">
                 <p class="card-text">{{description}}</p>
               </div>
             </div>
           </li>
-          {{!-- <li class="article-item bg-primary">{{title}} <button class="btn btn-success">Save</button></li> --}}
         {{/unless}}
       {{/each}}  
     {{else}}
@@ -57,7 +56,3 @@
     {{/if}}
   </ul>  
 </section>
-
-{{!-- <section class="container-fluid">
-
-</section> --}}

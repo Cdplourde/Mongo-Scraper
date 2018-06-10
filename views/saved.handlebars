@@ -1,0 +1,59 @@
+{{!-- navbar --}}
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+  <a href="/" class="navbar-brand">Mongo Scraper</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a href="/" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item active">
+        <a href="/saved" class="nav-link">Saved Articles</a>
+      </li>
+      <li class="nav-item">
+        <button class="btn btn-danger mx-2 scrape">Scrape Articles</button>
+      </li>
+      <li class="nav-item">
+        <img class="loading" src="../public/image/loading.gif" width="39px" alt="">
+      </li>
+    </ul>
+  </div>
+</nav>
+{{!-- showcase --}}
+<section class="container-fluid text-center showcase d-flex">
+  <div class="row align-self-center m-auto">
+    <div class="col">
+      <h1>Mongo Scraper</h1>
+      <h3>New York Times Edition</h3>
+    </div>
+  </div>
+</section>
+{{!-- articles section --}}
+<section class="container-articles">
+  <ul class='articles'>
+    {{#if articles}}
+      {{#each articles}}
+        {{#if saved}}
+          <li>
+            <div class="card mb-3">
+              <div class="card-header bg-primary text-white">
+                <div class="d-inline float-left">
+                  <a href="{{link}}" target="_blank" class="text-white">{{title}} <i class="fas fa-external-link-alt"></i></a>
+                </div> 
+                <button class="btn btn-danger delete d-inline float-right mt-1" data-id="{{_id}}">Delete Article</button>
+                <button class="btn btn-warning delete d-inline float-right mt-1 mr-2" data-id="{{_id}}">Notes</button>
+              </div>
+              <div class="card-body">
+                <p class="card-text">{{description}}</p>
+              </div>
+            </div>
+          </li>
+        {{/if}}
+      {{/each}}  
+    {{else}}
+      <li class="no-articles">Uh oh. Looks like we don't have any saved articles.</li>
+    {{/if}}
+  </ul>  
+</section>
