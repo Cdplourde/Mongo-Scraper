@@ -22,6 +22,16 @@ module.exports = function(app) {
     });
   });
 
+  app.get("/notes/:id?", function(req, res) {
+    var hbsObject = {}
+    db.Article.find({_id: req.params.id})
+    .then(function(results) {
+      hbsObject.note = results[0].note;
+      // console.log(hbsObject)
+      res.send(hbsObject);
+    });
+  })
+
   app.put("/saved", function(req, res) {
     console.log(req.body);
     db.Article.update({_id: req.body.id}, {$set: {saved: true}})

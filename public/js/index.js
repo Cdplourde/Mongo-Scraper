@@ -29,19 +29,28 @@ function unsave(id) {
 }
 
 function getNotes(id) {
-  fetch('/notes', {
-    method: "GET",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({"id": id})
-  }).then((res) => {
-    // TODO: MODAL WITH NOTES
-    console.log("this is res", res)
-  }).catch((err) => {
-    console.log(err)
-  })
+  //create XHR object
+  var xhr = new XMLHttpRequest();
+  var listBtn = document.querySelector('.notes-list');
+  listBtn.innerHTML = "";
+
+  xhr.onload = function() {
+    // document.querySelector('.loading').style.display = "none"
+    if (this.status === 200) {
+      var res = JSON.parse(this.responseText);
+      console.log(res.note);
+      for (var i = 0; i < res.note.length; i++) {
+        listBtn.innerHTML += `<li class='py-3'>${res.note[i]}<button class='btn btn-danger remove-note float-right mr-2'>x</button></li>`
+      }
+    }
+    else {
+      console.log("error!");
+    }
+  }
+
+  xhr.open('GET', '/notes/' + id, true)
+
+  xhr.send();
 }
  
 function scrape() {
@@ -106,6 +115,8 @@ document.querySelectorAll('.notes').forEach(function(btn, i) {
   btn.addEventListener("click", function(e) {
     e.preventDefault();
     var id = btn.getAttribute("data-id");
+    var modalTitle = document.querySelector('.modal-title')
+    modalTitle.innerText = "Notes for Article: " + id
     getNotes(id);
   })
 })
