@@ -33,6 +33,16 @@ module.exports = function(app) {
     });
   });
 
+  app.put("/unsave", function(req, res) {
+    db.Article.update({_id: req.body.id}, {$set: {saved: false}})
+    .then(function() {
+      res.end();
+    })
+    .catch(function(err) {
+      res.json(err)
+    });
+  })
+
   app.post("/scrape", function(req, res) {
     // get all current titles in database
     var dbTitles = []

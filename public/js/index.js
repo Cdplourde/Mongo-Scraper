@@ -1,20 +1,3 @@
-document.querySelectorAll('.save').forEach(function(btn, i) {
-  btn.addEventListener("click", function(e) {
-    e.preventDefault();
-    btn.setAttribute("disabled", true);
-    var id = btn.getAttribute("data-id");
-    save(id);
-    btn.innerText = "Saved"
-  })
-})
-
-
-document.querySelector('.scrape').addEventListener('click', function(e) {
-  e.preventDefault();
-  this.setAttribute('disabled', true);
-  scrape();
-});
-
 function save(id) {
   fetch('/saved', {
       method: "PUT",
@@ -28,6 +11,37 @@ function save(id) {
     }).catch((err) => {
       console.log(err)
     })
+}
+
+function unsave(id) {
+  fetch('/unsave', {
+    method: "PUT",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({"id": id})
+  }).then((res) => {
+    console.log("this is res", res)
+  }).catch((err) => {
+    console.log(err)
+  })
+}
+
+function getNotes(id) {
+  fetch('/notes', {
+    method: "GET",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({"id": id})
+  }).then((res) => {
+    // TODO: MODAL WITH NOTES
+    console.log("this is res", res)
+  }).catch((err) => {
+    console.log(err)
+  })
 }
  
 function scrape() {
@@ -67,3 +81,37 @@ function scrape() {
 
   xhr.send();
 }
+
+document.querySelectorAll('.save').forEach(function(btn, i) {
+  btn.addEventListener("click", function(e) {
+    e.preventDefault();
+    btn.setAttribute("disabled", true);
+    var id = btn.getAttribute("data-id");
+    save(id);
+    btn.innerText = "Saved"
+  })
+});
+
+document.querySelectorAll('.destroy').forEach(function(btn, i) {
+  btn.addEventListener("click", function(e) {
+    e.preventDefault();
+    btn.setAttribute("disabled", true);
+    var id = btn.getAttribute("data-id");
+    unsave(id);
+    btn.innerText = "Deleted"
+  })
+});
+
+document.querySelectorAll('.notes').forEach(function(btn, i) {
+  btn.addEventListener("click", function(e) {
+    e.preventDefault();
+    var id = btn.getAttribute("data-id");
+    getNotes(id);
+  })
+})
+
+document.querySelector('.scrape').addEventListener('click', function(e) {
+  e.preventDefault();
+  this.setAttribute('disabled', true);
+  scrape();
+});
