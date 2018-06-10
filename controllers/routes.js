@@ -39,6 +39,20 @@ module.exports = function(app) {
     .then(function(results) {
       res.end();
     })
+    .catch(function(err) {
+      res.json(err);
+    })
+  })
+
+  app.put("/notes/add", function(req, res) {
+    console.log(req.body);
+    db.Article.update({_id: req.body.id}, {$push: {note: req.body.note}})
+    .then(function(results) {
+      res.json({"note": req.body.note, "id": req.body.id})
+    })
+    .catch(function(err) {
+      res.json(err);
+    })
   })
 
   app.put("/saved", function(req, res) {

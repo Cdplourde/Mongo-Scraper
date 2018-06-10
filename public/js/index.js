@@ -64,6 +64,44 @@ function getNotes(id) {
   xhr.send();
 }
 
+// function saveNote(userInput, id) {
+//   var xhr = new XMLHttpRequest();
+
+//   xhr.onload = function() {
+//     if(this.status === 200) {
+//       var res = JSON.parse(this.responseText);
+//       console.log(res);
+//     }
+//   }
+
+//   xhr.onerror = function() {
+//     console.log("request error");
+//   }
+
+//   xhr.open("PUT", "/notes/add", true);
+
+//   xhr.send({"note": userInput, "id": id});
+// }
+function saveNote(userInput, id) {
+  fetch('/notes/add', {
+    method: "PUT",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({"note": userInput, "id": id})
+  }).then((res) => {
+
+    res.json()
+    .then(body => {
+      var listBtn = document.querySelector('.notes-list');
+      listBtn.innerHTML += `<li class='py-3'>${body.note}<button class='btn btn-danger remove-note float-right mr-2' data-id='${body.id}'>x</button></li>`      
+    })
+  }).catch((err) => {
+    console.log(err)
+  })
+}
+
 function deleteNote(sentObj) {
   fetch('/notes/delete', {
     method: "DELETE",
@@ -96,7 +134,6 @@ function scrape() {
   xhr.onload = function() {
     // document.querySelector('.loading').style.display = "none"
     if (this.status === 200) {
-      console.log(this.responseText);
       if (Number(this.responseText) === 0) {
         alert("No new articles found")
         window.location.reload();
@@ -117,6 +154,19 @@ function scrape() {
   xhr.send();
 }
 
+if (document.querySelector('.save-note')) {
+  document.querySelector('.save-note').addEventListener('click', function(e) {
+    e.preventDefault();
+    var userInput = document.querySelector('textarea').value.trim();
+    document.querySelector('textarea').value = "";
+    var id = document.querySelector('.save-note').getAttribute('data-id')
+    if (userInput !== "") {
+      saveNote(userInput, id);
+    }
+  });  
+}
+
+
 document.querySelectorAll('.save').forEach(function(btn, i) {
   btn.addEventListener("click", function(e) {
     e.preventDefault();
@@ -124,7 +174,7 @@ document.querySelectorAll('.save').forEach(function(btn, i) {
     var id = btn.getAttribute("data-id");
     save(id);
     btn.innerText = "Saved"
-  })
+  });
 });
 
 document.querySelectorAll('.destroy').forEach(function(btn, i) {
@@ -142,6 +192,8 @@ document.querySelectorAll('.notes').forEach(function(btn, i) {
     e.preventDefault();
     var id = btn.getAttribute("data-id");
     var modalTitle = document.querySelector('.modal-title')
+    var addNoteBtn = document.querySelector('.save-note');
+    addNoteBtn.setAttribute("data-id", id)
     modalTitle.innerText = "Notes for Article: " + id
     getNotes(id);
   })
