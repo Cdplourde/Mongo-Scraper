@@ -27,9 +27,18 @@ module.exports = function(app) {
     db.Article.find({_id: req.params.id})
     .then(function(results) {
       hbsObject.note = results[0].note;
+      hbsObject.id = results[0].id
       // console.log(hbsObject)
       res.send(hbsObject);
     });
+  })
+
+  app.delete("/notes/delete", function(req, res) {
+    console.log(req.body);
+    db.Article.update({_id: req.body.id}, {$pull:{note: req.body.note}})
+    .then(function(results) {
+      res.end();
+    })
   })
 
   app.put("/saved", function(req, res) {

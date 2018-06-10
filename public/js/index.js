@@ -38,10 +38,21 @@ function getNotes(id) {
     // document.querySelector('.loading').style.display = "none"
     if (this.status === 200) {
       var res = JSON.parse(this.responseText);
-      console.log(res.note);
+      console.log(res);
       for (var i = 0; i < res.note.length; i++) {
-        listBtn.innerHTML += `<li class='py-3'>${res.note[i]}<button class='btn btn-danger remove-note float-right mr-2'>x</button></li>`
+        listBtn.innerHTML += `<li class='py-3'>${res.note[i]}<button class='btn btn-danger remove-note float-right mr-2' data-id='${res.id}'>x</button></li>`
       }
+      document.querySelectorAll('.remove-note').forEach(function(btn, i) {
+        btn.addEventListener("click", function(e) {
+          e.preventDefault();
+          var id = btn.getAttribute("data-id");
+          var note = btn.parentElement.innerText;
+          note = note.substr(0, note.length - 1);
+          var sentObj = {id: id, note: note}
+          btn.parentElement.remove();
+          deleteNote(sentObj);
+        });
+      });
     }
     else {
       console.log("error!");
@@ -51,6 +62,21 @@ function getNotes(id) {
   xhr.open('GET', '/notes/' + id, true)
 
   xhr.send();
+}
+
+function deleteNote(sentObj) {
+  fetch('/notes/delete', {
+    method: "DELETE",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(sentObj)
+  }).then((res) => {
+    console.log("this is res", res)
+  }).catch((err) => {
+    console.log(err)
+  }) 
 }
  
 function scrape() {
