@@ -95,7 +95,16 @@ function saveNote(userInput, id) {
     res.json()
     .then(body => {
       var listBtn = document.querySelector('.notes-list');
-      listBtn.innerHTML += `<li class='py-3'>${body.note}<button class='btn btn-danger remove-note float-right mr-2' data-id='${body.id}'>x</button></li>`      
+      listBtn.innerHTML += `<li class='py-3'>${body.note}<button class='btn btn-danger remove-note float-right mr-2' data-id='${body.id}'>x</button></li>` 
+      document.querySelector('.remove-note').addEventListener('click', function(e) {
+        e.preventDefault();
+        var id = this.getAttribute("data-id");
+        var note = this.parentElement.innerText;
+        note = note.substr(0, note.length - 1);
+        var sentObj = {id: id, note: note}
+        this.parentElement.remove();
+        deleteNote(sentObj);
+      })     
     })
   }).catch((err) => {
     console.log(err)
